@@ -1,98 +1,60 @@
 <template>
-  <div
-    id="app"
-    class="small-container"
-  >
-    <h1>Employees</h1>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
 
-    <employee-form @add:employee="addEmployee" />
-    <employee-table
-      :employees="employees"
-      @delete:employee="deleteEmployee"
-      @edit:employee="editEmployee"
-    />
-  </div>
+        <v-img
+          alt="Vuetify Name"
+          class="shrink mt-1 hidden-sm-and-down"
+          contain
+          min-width="100"
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          width="100"
+        />
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <HelloWorld/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import EmployeeTable from '@/components/EmployeeTable.vue'
-import EmployeeForm from '@/components/EmployeeForm.vue'
-export default {
-  name: "app",
-  components: {
-    EmployeeTable,
-    EmployeeForm,
-  },
-  data() {
-    return {
-      employees: []
-    }
-  },
-  mounted() {
-    this.getEmployees()
-  },
-  methods: {
-    async getEmployees() {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users')
-        const data = await response.json()
-        this.employees = data
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async addEmployee(employee) {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/users', {
-          method: 'POST',
-          body: JSON.stringify(employee),
-          headers: { "Content-type": "application/json; charset=UTF-8" }
-        })
-        const data = await response.json()
-        this.employees = [...this.employees, data]
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async editEmployee(id, updatedEmployee) {
-      try {
-        const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-          method: 'PUT',
-          body: JSON.stringify(updatedEmployee),
-          headers: { "Content-type": "application/json; charset=UTF-8" }
-        })
-        const data = await response.json()
-        this.employees = this.employees.map(employee => employee.id === id ? data : employee)
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async deleteEmployee(id) {
-      try {
-        await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, {
-          method: 'DELETE'
-        })
-        this.employees = this.employees.filter(employee => employee.id !== id)
-      } catch (error) {
-        console.error(error)
-      }
-    },
-  },
-}
-</script>
+import HelloWorld from './components/HelloWorld';
 
-<style>
-button {
-  background: #009435;
-  border: 1px solid #009435;
-}
-button:hover,
-button:active,
-button:focus {
-  background: #32a95d;
-  border: 1px solid #32a95d;
-}
-.small-container {
-  max-width: 680px;
-}
-</style>
+export default {
+  name: 'App',
+
+  components: {
+    HelloWorld,
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
